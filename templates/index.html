@@ -1,44 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>CLIMAPREDICT</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
-    />
-  </head>
-  <body>
-    <h1>CLIMAPREDICT</h1>
-    <form action="/procesar" method="post">
-      <label>Datos separados por coma:</label><br />
-      <input type="text" name="datos" /><br /><br />
+<head>
+  <meta charset="UTF-8" />
+  <title>CLIMAPREDICT</title>
+  
+  <!-- Enlace al archivo CSS para estilos -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
 
-      <label>Método numérico:</label><br />
-      <select name="metodo">
-        <option value="interpolacion">Interpolación</option>
-        <option value="ajuste">Ajuste</option>
-        <option value="derivada">Derivada</option>
-        <option value="optimizacion">Optimización</option></select
-      ><br /><br />
+<body>
+  <h1>CLIMAPREDICT</h1>
 
-      <input type="submit" value="Procesar" />
-    </form>
+  <!-- Formulario para ingreso de datos climáticos y selección de método -->
+  <form action="/procesar" method="post">
+    
+    <!-- Entrada de datos -->
+    <label for="datos">Datos separados por coma:</label><br />
+    <input type="text" id="datos" name="datos" /><br /><br />
 
-    {% if resultado %}
+    <!-- Selección de método numérico -->
+    <label for="metodo">Método numérico:</label><br />
+    <select id="metodo" name="metodo">
+      <option value="interpolacion">Interpolación</option>
+      <option value="ajuste">Ajuste</option>
+      <option value="derivada">Derivada</option>
+      <option value="optimizacion">Optimización</option>
+    </select><br /><br />
+
+    <input type="submit" value="Procesar" />
+  </form>
+
+  <!-- Resultado de la operación, si está disponible -->
+  {% if resultado %}
     <h2>Resultado:</h2>
     <p>{{ resultado }}</p>
 
+    <!-- Mostrar los datos ingresados por el usuario -->
     {% if request.form.datos %}
-    <h3>Datos ingresados:</h3>
-    <p>{{ request.form.datos }}</p>
-    {% endif %} {% endif %} {% if imagen %}
+      <h3>Datos ingresados:</h3>
+      <p>{{ request.form.datos }}</p>
+    {% endif %}
+  {% endif %}
+
+  <!-- Imagen de la gráfica generada, si existe -->
+  {% if imagen %}
     <h3>Gráfica generada:</h3>
     <img
       src="{{ url_for('imagen', filename=imagen) }}"
       alt="Gráfica"
       style="max-width: 600px"
     />
-    {% endif %}
-  </body>
+  {% endif %}
+</body>
 </html>
